@@ -2,8 +2,11 @@ from fastapi import (
     FastAPI,
     UploadFile,
     File,
-    HTTPException
+    HTTPException,
+    Request
 )
+
+from fastapi.responses import JSONResponse
 
 from pydantic import BaseModel
 
@@ -28,6 +31,11 @@ from rag.chat_service import (
 
 from rag.chat_manager import get_chat_path
 
+from rag.session import (
+    set_current_user,
+    reset_current_user
+)
+
 
 # =========================================================
 # FASTAPI APPLICATION
@@ -38,6 +46,73 @@ app = FastAPI(
     description="Multi Chat RAG Backend",
     version="1.0"
 )
+
+
+# =========================================================
+# SESSION ISOLATION
+# =========================================================
+
+@app.middleware("http")
+async def session_middleware(
+    request: Request,
+    call_next
+):
+
+    # Public endpoints that do not require a session
+    public_paths = {
+        "/",
+        "/docs",
+        "/openapi.json",
+        "/redoc",
+        "/favicon.ico"
+    }
+
+    if request.url.path in public_paths:
+
+        return await call_next(
+            request
+        )
+
+    # -----------------------------------------------------
+    # Get browser session ID
+    # -----------------------------------------------------
+
+    session_id = request.headers.get(
+        "X-Nexa-Session"
+    )
+
+    if not session_id:
+
+        return JSONResponse(
+            status_code=401,
+            content={
+                "detail": (
+                    "NexaRAG session is required."
+                )
+            }
+        )
+
+    # -----------------------------------------------------
+    # Set current session
+    # -----------------------------------------------------
+
+    token = set_current_user(
+        session_id
+    )
+
+    try:
+
+        response = await call_next(
+            request
+        )
+
+        return response
+
+    finally:
+
+        reset_current_user(
+            token
+        )
 
 
 # =========================================================

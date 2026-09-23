@@ -1,12 +1,13 @@
 import streamlit as st
 import requests
+import secrets
 
 
 # ============================================================
 # CONFIGURATION
 # ============================================================
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://nexarag-puuh.onrender.com"
 
 st.set_page_config(
     page_title="NexaRAG",
@@ -261,6 +262,18 @@ if "upload_status" not in st.session_state:
 
 
 # ============================================================
+# NEXARAG SESSION
+# ============================================================
+
+if "nexa_session_id" not in st.session_state:
+    st.session_state.nexa_session_id = secrets.token_urlsafe(32)
+
+REQUEST_HEADERS = {
+    "X-Nexa-Session": st.session_state.nexa_session_id
+}
+
+
+# ============================================================
 # BACKEND HELPERS
 # ============================================================
 
@@ -268,7 +281,11 @@ def get_chats():
     """Get all chats, with a small retry for startup/backend timing."""
     for _ in range(3):
         try:
-            response = requests.get(f"{API_URL}/chats", timeout=10)
+            response = requests.get(
+                f"{API_URL}/chats",
+                headers=REQUEST_HEADERS,
+                timeout=10
+            )
             if response.status_code == 200:
                 chats = response.json().get("chats", [])
                 st.session_state.chats = chats
@@ -286,7 +303,11 @@ def get_chats():
 
 def create_chat():
     try:
-        response = requests.post(f"{API_URL}/chat/create", timeout=10)
+        response = requests.post(
+            f"{API_URL}/chat/create",
+            headers=REQUEST_HEADERS,
+            timeout=10
+        )
         if response.status_code == 200:
             data = response.json()
             st.session_state.chat_id = data["chat_id"]
@@ -304,6 +325,7 @@ def load_history(chat_id):
     try:
         response = requests.get(
             f"{API_URL}/chat/{chat_id}/history",
+            headers=REQUEST_HEADERS,
             timeout=10
         )
         if response.status_code == 200:
@@ -325,6 +347,7 @@ def upload_document(chat_id, uploaded_file):
 
         response = requests.post(
             f"{API_URL}/chat/{chat_id}/upload",
+            headers=REQUEST_HEADERS,
             files=files,
             timeout=120
         )
@@ -356,6 +379,7 @@ def get_documents(chat_id):
     try:
         response = requests.get(
             f"{API_URL}/chat/{chat_id}/documents",
+            headers=REQUEST_HEADERS,
             timeout=10
         )
 
@@ -378,6 +402,7 @@ def ask_question(chat_id, question):
 
         response = requests.post(
             f"{API_URL}/chat/{chat_id}/ask",
+            headers=REQUEST_HEADERS,
             json=payload,
             timeout=180
         )
@@ -416,6 +441,7 @@ def rename_chat(chat_id, new_name):
     try:
         response = requests.patch(
             f"{API_URL}/chat/{chat_id}/rename",
+            headers=REQUEST_HEADERS,
             json={"name": new_name},
             timeout=10
         )
@@ -439,6 +465,7 @@ def delete_chat(chat_id):
     try:
         response = requests.delete(
             f"{API_URL}/chat/{chat_id}",
+            headers=REQUEST_HEADERS,
             timeout=10
         )
 

@@ -1,9 +1,30 @@
 import json
 import os
 import shutil
+import hashlib
+
+from rag.session import get_current_user
 
 
 CHATS_FOLDER = "chats"
+
+
+# ====================================================
+# User Folder
+# ====================================================
+
+def get_user_folder():
+
+    user_id = get_current_user()
+
+    user_hash = hashlib.sha256(
+        user_id.encode("utf-8")
+    ).hexdigest()[:32]
+
+    return os.path.join(
+        CHATS_FOLDER,
+        user_hash
+    )
 
 
 # ====================================================
@@ -83,13 +104,15 @@ def save_chat_name(
 
 def create_chat():
 
+    user_folder = get_user_folder()
+
     os.makedirs(
-        CHATS_FOLDER,
+        user_folder,
         exist_ok=True
     )
 
     chat_folders = os.listdir(
-        CHATS_FOLDER
+        user_folder
     )
 
     max_chat_id = 0
@@ -116,17 +139,19 @@ def create_chat():
     chat_name = f"chat_{next_chat_id:03d}"
 
     chat_path = os.path.join(
-        CHATS_FOLDER,
+        user_folder,
         chat_name
     )
 
     os.makedirs(chat_path)
+
     os.makedirs(
         os.path.join(
             chat_path,
             "database"
         )
     )
+
     os.makedirs(
         os.path.join(
             chat_path,
@@ -149,10 +174,12 @@ def create_chat():
 
 def get_chat_path(chat_id):
 
+    user_folder = get_user_folder()
+
     chat_name = f"chat_{int(chat_id):03d}"
 
     chat_path = os.path.join(
-        CHATS_FOLDER,
+        user_folder,
         chat_name
     )
 
@@ -200,8 +227,10 @@ def rename_chat(
 
 def list_chats():
 
+    user_folder = get_user_folder()
+
     if not os.path.exists(
-        CHATS_FOLDER
+        user_folder
     ):
 
         return []
@@ -209,11 +238,11 @@ def list_chats():
     chat_folders = []
 
     for folder in os.listdir(
-        CHATS_FOLDER
+        user_folder
     ):
 
         chat_path = os.path.join(
-            CHATS_FOLDER,
+            user_folder,
             folder
         )
 
