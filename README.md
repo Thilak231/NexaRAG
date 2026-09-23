@@ -204,7 +204,7 @@ python -m venv venv
 Activate it on Windows:
 
 ```bash
-venv\Scriptsctivate
+venv\Scripts\activate
 ```
 
 ### 3. Install dependencies
