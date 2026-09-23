@@ -32,7 +32,6 @@ The application combines a Streamlit frontend with a FastAPI backend, LangChain 
 ![Swagger API](screenshots/swagger-api.png)
 
 ---
-
 ## Features
 
 - Multi-chat conversation management
