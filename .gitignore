@@ -1,0 +1,38 @@
+# Environment variables / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# User-generated chat data
+chats/*
+!chats/.gitkeep
+
+# Generated vector databases
+*.faiss
+*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+# User-generated chat data
+chats/*
+!chats/.gitkeep
+
+# Old/local project data
+data/
+database/
+
+# Generated vector databases
+*.faiss
+*.pkl
