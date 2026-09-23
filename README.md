@@ -1,3 +1,4 @@
+````markdown
 # NexaRAG
 
 ### Multi-Chat Retrieval-Augmented Generation Knowledge Assistant
@@ -84,7 +85,7 @@ The application combines a Streamlit frontend with a FastAPI backend, LangChain 
                                       │ LangChain +      │
                                       │ Google Gemini    │
                                       └──────────────────┘
-```
+````
 
 ---
 
@@ -172,17 +173,17 @@ NexaRag/
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Python | Application development |
-| FastAPI | Backend REST API |
-| Streamlit | Frontend UI |
-| LangChain | RAG pipeline orchestration |
-| FAISS | Vector similarity search |
-| Google Gemini | LLM and embeddings |
-| PyPDF | PDF processing |
-| Pydantic | API request validation |
-| Uvicorn | FastAPI server |
+| Technology    | Purpose                    |
+| ------------- | -------------------------- |
+| Python        | Application development    |
+| FastAPI       | Backend REST API           |
+| Streamlit     | Frontend UI                |
+| LangChain     | RAG pipeline orchestration |
+| FAISS         | Vector similarity search   |
+| Google Gemini | LLM and embeddings         |
+| PyPDF         | PDF processing             |
+| Pydantic      | API request validation     |
+| Uvicorn       | FastAPI server             |
 
 ---
 
@@ -257,18 +258,18 @@ http://localhost:8501
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/` | Backend health check |
-| POST | `/chat/create` | Create a new chat |
-| GET | `/chats` | List all chats |
-| DELETE | `/chat/{chat_id}` | Delete a chat |
-| PATCH | `/chat/{chat_id}/rename` | Rename a chat |
-| POST | `/chat/{chat_id}/upload` | Upload a PDF |
-| POST | `/chat/{chat_id}/ask` | Ask a question |
-| GET | `/chat/{chat_id}/history` | Get conversation history |
-| GET | `/chat/{chat_id}/documents` | List chat documents |
-| DELETE | `/chat/{chat_id}/documents/{filename}` | Delete a document |
+| Method | Endpoint                               | Description              |
+| ------ | -------------------------------------- | ------------------------ |
+| GET    | `/`                                    | Backend health check     |
+| POST   | `/chat/create`                         | Create a new chat        |
+| GET    | `/chats`                               | List all chats           |
+| DELETE | `/chat/{chat_id}`                      | Delete a chat            |
+| PATCH  | `/chat/{chat_id}/rename`               | Rename a chat            |
+| POST   | `/chat/{chat_id}/upload`               | Upload a PDF             |
+| POST   | `/chat/{chat_id}/ask`                  | Ask a question           |
+| GET    | `/chat/{chat_id}/history`              | Get conversation history |
+| GET    | `/chat/{chat_id}/documents`            | List chat documents      |
+| DELETE | `/chat/{chat_id}/documents/{filename}` | Delete a document        |
 
 ---
 
@@ -292,9 +293,9 @@ The `.env` file is excluded from Git using `.gitignore`.
 
 Each conversation maintains its own:
 
-- Conversation history
-- Uploaded documents
-- FAISS vector index
+* Conversation history
+* Uploaded documents
+* FAISS vector index
 
 This prevents documents from one conversation from being retrieved in another conversation.
 
@@ -311,3 +312,6 @@ Streamlit → FastAPI → RAG Service → FAISS / Gemini
 ```
 
 This allows the backend API to operate independently of the Streamlit interface.
+
+````
+
