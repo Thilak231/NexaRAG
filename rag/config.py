@@ -10,7 +10,7 @@ load_dotenv()
 
 # Application default LLM
 llm = ChatGoogleGenerativeAI(
-    model="gemini-flash-latest"
+    model="gemini-3.5-flash-lite"
 )
 
 
@@ -26,6 +26,6 @@ def create_llm(api_key=None):
         return llm
 
     return ChatGoogleGenerativeAI(
-        model="gemini-flash-latest",
+        model="gemini-3.5-flash-lite",
         google_api_key=api_key
     )
