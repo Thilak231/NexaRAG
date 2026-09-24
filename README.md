@@ -1,3 +1,10 @@
+## 🚀 Live Demo
+
+👉 **[Try NexaRAG Live](https://nexarag.streamlit.app)**
+
+> No installation required. Open the demo and start chatting with your documents.
+
+
 # NexaRAG
 
 ### Multi-Chat Retrieval-Augmented Generation Knowledge Assistant
